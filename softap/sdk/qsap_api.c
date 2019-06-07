@@ -67,7 +67,7 @@
 #define LOG_TAG "QCSDK"
 
 #include <cutils/properties.h>
-#include <cutils/log.h>
+#include <log/log.h>
 
 #define SKIP_BLANK_SPACE(x) {while(*x != '\0') { if((*x == ' ') || (*x == '\t')) x++; else break; }}
 
@@ -344,7 +344,7 @@ static s32 qsap_write_cfg(s8 *pfile, struct Command * pcmd, s8 *pVal, s8 *presp,
     s8 buf[MAX_CONF_LINE_LEN+1];
     s16 len, result = FALSE;
 
-    ALOGD("cmd=%s, Val:%s, INI:%ld \n", pcmd->name, pVal, inifile);
+    ALOGD("cmd=%s, Val:%s, INI:%d \n", pcmd->name, pVal, inifile);
 
     /** Open the configuration file */
     fcfg = fopen(pfile, "r");
@@ -618,7 +618,7 @@ static void qsap_set_security_mode(s8 *pfile, u32 sec_mode, s8 *presp, u32 *plen
     }
     else {
         /** WPA, WPA2 and mixed-mode security */
-        u16 wpa_val;
+        u16 wpa_val = 0;
         u32 tmp = *plen;
 
         wep = DISABLE;
@@ -1237,7 +1237,7 @@ int qsap_get_operating_channel(s32 *pchan)
 
     ALOGE("Recv len :%d \n", wrq.u.data.length);
     *pchan = *(int *)(&wrq.u.name[0]);
-    ALOGE("Operating channel :%ld \n", *pchan);
+    ALOGE("Operating channel :%d \n", *pchan);
     close(sock);
     return eSUCCESS;
 
@@ -1301,7 +1301,7 @@ int qsap_get_sap_auto_channel_selection(s32 *pautochan)
 
     ALOGD("Recv len :%d \n", wrq.u.data.length);
     *pautochan = *(int *)(&wrq.u.name[0]);
-    ALOGD("Sap auto channel selection pautochan=%ld \n", *pautochan);
+    ALOGD("Sap auto channel selection pautochan=%d \n", *pautochan);
     close(sock);
     return eSUCCESS;
 
@@ -2882,7 +2882,7 @@ static void qsap_handle_set_request(s8 *pcmd, s8 *presp, u32 *plen)
 
         case eCMD_RESET_AP:
             value = atoi(pVal);
-            ALOGE("Reset :%ld \n", value);
+            ALOGE("Reset :%d \n", value);
             if(SAP_RESET_BSS == value) {
                 status = wifi_qsap_stop_softap();
                 if(status == eSUCCESS) {
@@ -3170,7 +3170,7 @@ error:
 */
 void qsap_hostd_exec_cmd(s8 *pcmd, s8 *presp, u32 *plen)
 {
-    ALOGD("CMD INPUT  [%s][%lu]\n", pcmd, *plen);
+    ALOGD("CMD INPUT  [%s][%u]\n", pcmd, *plen);
     /* Skip any blank spaces */
     SKIP_BLANK_SPACE(pcmd);
 
@@ -3200,7 +3200,7 @@ void qsap_hostd_exec_cmd(s8 *pcmd, s8 *presp, u32 *plen)
         *plen = qsap_scnprintf(presp, *plen, "%s", ERR_INVALIDREQ);
     }
 
-    ALOGD("CMD OUTPUT [%s]\nlen :%lu\n\n", presp, *plen);
+    ALOGD("CMD OUTPUT [%s]\nlen :%u\n\n", presp, *plen);
 
     return;
 }

@@ -49,7 +49,7 @@
 
 #define LOG_TAG "QCLDR-"
 
-#include <cutils/log.h>
+#include <log/log.h>
 #include <cutils/memory.h>
 #include <cutils/misc.h>
 #include <cutils/properties.h>
@@ -426,7 +426,7 @@ s32 wifi_qsap_stop_bss(void)
     close(sock);
 
     if (ret) {
-        ALOGE("IOCTL stopbss failed: %ld", ret);
+        ALOGE("IOCTL stopbss failed: %d", ret);
         ret = eERR_STOP_BSS;
     } else {
         ALOGD("STOP BSS ISSUED");
@@ -744,7 +744,7 @@ s32 wifi_qsap_set_tx_power(s32 tx_power)
     close(sock);
 
     if (ret) {
-        ALOGE("%s :IOCTL set tx power failed: %ld\n", __func__, ret);
+        ALOGE("%s :IOCTL set tx power failed: %d\n", __func__, ret);
         ret = eERR_SET_TX_POWER;
     } else {
         ALOGD("%s :IOCTL set tx power issued\n", __func__);
